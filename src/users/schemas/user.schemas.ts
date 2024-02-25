@@ -1,6 +1,10 @@
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
 import { Document } from 'mongoose';
+export interface UserDocument extends User, Document {
+  createdAt: Date;
+  updatedAt: Date;
+}
 @Schema({ timestamps: true })
 export class User extends Document {
   @Prop({ required: true })

@@ -1,8 +1,8 @@
-import { Exclude } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
-export class UserDto extends Document {
-  @Exclude()
+export class UserDto {
+  @Expose()
   email: string;
-  @Exclude()
+  @Expose()
   fullName: string;
 }
