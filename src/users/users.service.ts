@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schemas';
 import { Model } from 'mongoose';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -10,10 +11,15 @@ export class UsersService {
     private readonly userModel: Model<User>,
   ) {}
 
+  async create(dto: CreateUserDto) {
+    const user = await this.userModel.create(dto);
+    return user;
+  }
+
   async findById(id: string) {
     return this.userModel.findById(id);
   }
-  find(email: string) {
+  async find(email: string) {
     return this.userModel.findOne({ email: email });
   }
 
