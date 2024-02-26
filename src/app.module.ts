@@ -8,6 +8,9 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getMongoDbConfig } from './config/mongo.config';
+import { RolesService } from './roles/roles.service';
+import { RolesController } from './roles/roles.controller';
+import { RolesModule } from './roles/roles.module';
 
 @Module({
   imports: [
@@ -20,8 +23,10 @@ import { getMongoDbConfig } from './config/mongo.config';
     UsersModule,
 
     AuthModule,
+
+    RolesModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, RolesController],
+  providers: [AppService, RolesService],
 })
 export class AppModule {}

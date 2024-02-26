@@ -12,7 +12,8 @@ export class UsersService {
   ) {}
 
   async create(dto: CreateUserDto) {
-    const user = await this.userModel.create(dto);
+    const user = (await this.userModel.create(dto)).populate('role');
+
     return user;
   }
 

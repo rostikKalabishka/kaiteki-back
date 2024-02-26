@@ -27,11 +27,12 @@ export class AuthService {
     const salt = await genSalt(10);
     const newUser = await this.userService.create({
       email: dto.email,
+      role: dto.role,
       fullName: dto.fullName,
       password: await hash(dto.password, salt),
     });
 
-    const token = this.jwtService.sign(newUser.id);
+    const token = this.jwtService.sign({ id: newUser.id, role: newUser.role });
 
     return {
       user: sanitize(newUser),
@@ -42,9 +43,13 @@ export class AuthService {
 
   async login(email: string, password: string) {
     const user = await this.validateUser(email, password);
-    const token = await this.jwtService.signAsync(user.id);
+    const token = await this.jwtService.signAsync({
+      id: user.id,
+      role: user.role,
+    });
+    const fullUser = await user.populate('role');
     return {
-      user: sanitize(user),
+      user: sanitize(fullUser),
       token,
     };
   }
