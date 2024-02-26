@@ -1,10 +1,8 @@
 import { Prop, SchemaFactory, Schema } from '@nestjs/mongoose';
 import { Exclude } from 'class-transformer';
-import { Document } from 'mongoose';
-export interface UserDocument extends User, Document {
-  createdAt: Date;
-  updatedAt: Date;
-}
+import mongoose, { Document } from 'mongoose';
+import { Role } from 'src/types';
+
 @Schema({ timestamps: true })
 export class User extends Document {
   @Prop({ required: true })
@@ -17,8 +15,12 @@ export class User extends Document {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ default: 'user' })
-  role: string;
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Roles',
+    default: '65dcbdb352b7e537befdca31',
+  })
+  role: Role;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

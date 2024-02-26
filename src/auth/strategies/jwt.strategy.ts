@@ -19,7 +19,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    const user = await this.userService.findById(payload.id);
+    const user = await (
+      await this.userService.findById(payload.id)
+    ).populate('role');
 
     if (!user) {
       throw new UnauthorizedException('Access denied');
@@ -27,6 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     return {
       id: user.id,
+      role: user.role,
     };
   }
 }
