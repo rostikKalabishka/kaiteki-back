@@ -1,9 +1,12 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsString, MinLength } from 'class-validator';
 
 export class LoginUserDto {
-  @IsEmail()
+  @IsEmail({}, { message: 'Невірна адреса електронної пошти' })
   email: string;
 
-  @IsString()
+  @MinLength(8, {
+    message: 'Мінімальна довжина паролю повинна бути 8 символів',
+  })
+  @IsString({ message: 'Пароль має бути рядком' })
   password: string;
 }
