@@ -28,7 +28,7 @@ export class TrailersService {
   async update(id: string, attrs: Partial<Trailer>) {
     const user = await this.trailerModel.findById(id);
     if (!user) {
-      throw new NotFoundException('track not found');
+      throw new NotFoundException('Прицеп не знайдено');
     }
     Object.assign(user, attrs);
     return user.save();
@@ -37,7 +37,7 @@ export class TrailersService {
   async remove(id: string) {
     const user = await this.trailerModel.findById(id);
     if (!user) {
-      throw new NotFoundException('track not found');
+      throw new NotFoundException('Прицеп не знайдено');
     }
     await user.deleteOne();
   }

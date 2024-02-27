@@ -28,7 +28,7 @@ export class TracksService {
   async update(id: string, attrs: Partial<Track>) {
     const user = await this.trackModel.findById(id);
     if (!user) {
-      throw new NotFoundException('track not found');
+      throw new NotFoundException('Автомобіль не знайдено');
     }
     Object.assign(user, attrs);
     return user.save();
@@ -37,7 +37,7 @@ export class TracksService {
   async remove(id: string) {
     const user = await this.trackModel.findById(id);
     if (!user) {
-      throw new NotFoundException('track not found');
+      throw new NotFoundException('Автомобіль не знайдено');
     }
     await user.deleteOne();
   }
