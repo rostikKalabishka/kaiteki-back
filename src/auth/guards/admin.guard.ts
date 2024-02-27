@@ -12,7 +12,7 @@ export class AdminGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     if (!request.user) {
-      throw new ForbiddenException('You are not admin');
+      throw new ForbiddenException('Ви не є адміністратором');
     }
 
     return request.user.role.title === 'admin';

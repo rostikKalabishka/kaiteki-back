@@ -24,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     ).populate('role');
 
     if (!user) {
-      throw new UnauthorizedException('Access denied');
+      throw new UnauthorizedException('У доступі відмовлено');
     }
 
     return {

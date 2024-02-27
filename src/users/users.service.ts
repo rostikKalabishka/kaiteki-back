@@ -27,7 +27,7 @@ export class UsersService {
   async update(id: string, attrs: Partial<User>) {
     const user = await this.userModel.findById(id);
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException('Користувача не знайдено');
     }
     Object.assign(user, attrs);
     return user.save();
@@ -36,7 +36,7 @@ export class UsersService {
   async remove(id: string) {
     const user = await this.userModel.findById(id);
     if (!user) {
-      throw new NotFoundException('user not found');
+      throw new NotFoundException('Користувача не знайдено');
     }
     await user.deleteOne();
   }

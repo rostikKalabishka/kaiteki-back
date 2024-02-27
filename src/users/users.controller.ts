@@ -10,10 +10,12 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { AdminGuard } from 'src/auth/guards/admin.guard';
 
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+
 @UseGuards(JwtAuthGuard)
+@UseGuards(AdminGuard)
 @Controller('user')
 export class UsersController {
   constructor(private userService: UsersService) {}
@@ -27,7 +29,7 @@ export class UsersController {
   findAllUsers(@Query('email') email: string) {
     return this.userService.find(email);
   }
-  @UseGuards(AdminGuard)
+
   @Patch('/:id')
   updateUser(@Param('id') id: string, @Body() body: UpdateUserDto) {
     return this.userService.update(id, body);

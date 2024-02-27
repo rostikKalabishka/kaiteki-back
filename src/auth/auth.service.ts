@@ -21,7 +21,7 @@ export class AuthService {
     const oldUser = await this.userService.find(dto.email);
     if (oldUser) {
       throw new BadRequestException(
-        'User with this email is already in the system',
+        'Користувач з такою поштою вже є в системі',
       );
     }
     const salt = await genSalt(10);
@@ -32,21 +32,27 @@ export class AuthService {
       password: await hash(dto.password, salt),
     });
 
-    const token = this.jwtService.sign({ id: newUser.id, role: newUser.role });
+    const token = await this.jwtService.signAsync(
+      { id: newUser.id, role: newUser.role },
+      {
+        expiresIn: '15d',
+      },
+    );
 
     return {
       user: sanitize(newUser),
-
       token,
     };
   }
 
   async login(email: string, password: string) {
     const user = await this.validateUser(email, password);
-    const token = await this.jwtService.signAsync({
-      id: user.id,
-      role: user.role,
-    });
+    const token = await this.jwtService.signAsync(
+      { id: user.id, role: user.role },
+      {
+        expiresIn: '15d',
+      },
+    );
     const fullUser = await user.populate('role');
     return {
       user: sanitize(fullUser),
@@ -57,14 +63,20 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userService.find(email);
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      throw new UnauthorizedException('Користувача не знайдено');
     }
 
     const isValidatePassword = await compare(password, user.password);
 
     if (!isValidatePassword) {
-      throw new UnauthorizedException('Invalid password');
+      throw new UnauthorizedException('Невірно введений пароль');
     }
     return user;
+  }
+
+  async getMe(user: User) {
+    const currentUser = await this.userService.findById(user.id);
+
+    return sanitize(await currentUser.populate('role'));
   }
 }
