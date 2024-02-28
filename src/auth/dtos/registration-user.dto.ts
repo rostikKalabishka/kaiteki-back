@@ -1,4 +1,10 @@
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { Role } from 'src/types';
 
 export class RegistrationUserDto {
@@ -13,7 +19,9 @@ export class RegistrationUserDto {
   })
   @IsString({ message: 'Пароль має бути рядком' })
   password: string;
-
+  @IsOptional()
+  @IsNumber({}, { message: 'Заробітна палта за кілометр має бути числом' })
+  salaryPerOneKm: number;
   @IsOptional()
   @IsString({ message: 'Роль має бути рядком' })
   role?: Role;
