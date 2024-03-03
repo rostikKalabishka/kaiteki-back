@@ -3,6 +3,9 @@ import { Trailer } from './schemas/trailer.schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateTrailerDto } from './dtos/create-trailer.dto';
+import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
+import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
+import { PageDto } from 'src/pagination/dtos/page.dto';
 
 @Injectable()
 export class TrailersService {
@@ -23,6 +26,18 @@ export class TrailersService {
   async find(type: string) {
     const tracks = this.trailerModel.find({ type: type });
     return tracks;
+  }
+  async findAll(pageOptions: PageOptionsDto) {
+    const skip = pageOptions.size * (pageOptions.page - 1);
+
+    const resPerPage = pageOptions.size;
+    const count = (await this.trailerModel.find()).length;
+    const users = await this.trailerModel.find().limit(resPerPage).skip(skip);
+    const pageMetaDto = new PageMetaDto({
+      itemCount: count,
+      pageOptionsDto: pageOptions,
+    });
+    return new PageDto(users, pageMetaDto);
   }
 
   async update(id: string, attrs: Partial<Trailer>) {

@@ -3,6 +3,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Track } from './schemas/track.schema';
 import { Model } from 'mongoose';
 import { CreateTrackDto } from './dtos/create-track.dto';
+import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
+import { PageDto } from 'src/pagination/dtos/page.dto';
+import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
 
 @Injectable()
 export class TracksService {
@@ -21,8 +24,23 @@ export class TracksService {
     return this.trackModel.findById(id);
   }
 
-  async findAll() {
-    const tracks = await this.trackModel.find();
+  async findAll(pageOptions: PageOptionsDto) {
+    const skip = pageOptions.size * (pageOptions.page - 1);
+
+    const resPerPage = pageOptions.size;
+
+    const count = (await this.trackModel.find()).length;
+    console.log(count);
+
+    const tracks = await this.trackModel.find().limit(resPerPage).skip(skip);
+    console.log(tracks);
+    const pageMetaDto = new PageMetaDto({
+      itemCount: count,
+      pageOptionsDto: pageOptions,
+    });
+    return new PageDto(tracks, pageMetaDto);
+
+    // const tracks = await this.trackModel.find();
     return tracks;
   }
 

@@ -14,10 +14,10 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { TrailersService } from './trailers.service';
 import { CreateTrailerDto } from './dtos/create-trailer.dto';
 import { UpdateTrailerDto } from './dtos/update-trailer.dto';
+import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 
 @Controller('trailer')
 @UseGuards(JwtAuthGuard)
-@UseGuards(AdminGuard)
 export class TrailersController {
   constructor(private trailerService: TrailersService) {}
   @Post()
@@ -25,20 +25,24 @@ export class TrailersController {
     return this.trailerService.create(body);
   }
 
+  @UseGuards(AdminGuard)
   @Get('/:id')
   findTrack(@Param('id') id: string) {
     return this.trailerService.findById(id);
   }
 
+  @UseGuards(AdminGuard)
   @Get()
-  findAllTracks(@Query('type') type: string) {
-    return this.trailerService.find(type);
+  findAllTracks(@Query() pageOptionsDto: PageOptionsDto) {
+    return this.trailerService.findAll(pageOptionsDto);
   }
 
+  @UseGuards(AdminGuard)
   @Patch('/:id')
   updateTrack(@Param('id') id: string, @Body() body: UpdateTrailerDto) {
     return this.trailerService.update(id, body);
   }
+  @UseGuards(AdminGuard)
   @Delete('/:id')
   removeTrack(@Param('id') id: string) {
     return this.trailerService.remove(id);
