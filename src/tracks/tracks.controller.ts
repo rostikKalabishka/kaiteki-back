@@ -17,7 +17,6 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @Controller('track')
 @UseGuards(JwtAuthGuard)
-@UseGuards(AdminGuard)
 export class TracksController {
   constructor(private trackService: TracksService) {}
   @Post()
@@ -29,10 +28,11 @@ export class TracksController {
   findTrack(@Param('id') id: string) {
     return this.trackService.findById(id);
   }
-
+  @UseGuards(AdminGuard)
   @Get()
   findAllTracks(@Query('brand') brand: string) {
-    return this.trackService.find(brand);
+    // return this.trackService.find(brand);
+    return this.trackService.findAll();
   }
 
   @Patch('/:id')

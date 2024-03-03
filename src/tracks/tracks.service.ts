@@ -20,6 +20,12 @@ export class TracksService {
   async findById(id: string) {
     return this.trackModel.findById(id);
   }
+
+  async findAll() {
+    const tracks = await this.trackModel.find();
+    return tracks;
+  }
+
   async find(brand: string) {
     const tracks = this.trackModel.find({ brand: brand });
     return tracks;

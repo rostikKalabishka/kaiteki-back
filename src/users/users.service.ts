@@ -4,6 +4,7 @@ import { User } from './schemas/user.schemas';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { Query } from 'express-serve-static-core';
+import { sanitize } from 'src/utils/sanitize';
 @Injectable()
 export class UsersService {
   constructor(
@@ -21,14 +22,15 @@ export class UsersService {
     return this.userModel.findById(id);
   }
   async find(email: string) {
-    return this.userModel.findOne({ email: email });
+    return await this.userModel.findOne({ email: email });
   }
 
   async findAll(query: Query) {
-    const resPerPage = Number(query.size) || 5;
-    const currentPage = Number(query.page) || 1;
-    const skip = resPerPage * (currentPage - 1);
-    return this.userModel.find().limit(resPerPage).skip(skip);
+    // const resPerPage = Number(query.size) || 5;
+    // const currentPage = Number(query.page) || 1;
+    // const skip = resPerPage * (currentPage - 1);
+    // return this.userModel.find().limit(resPerPage).skip(skip);
+    return (await this.userModel.find()).map((data) => sanitize(data));
   }
   async update(id: string, attrs: Partial<User>) {
     const user = await this.userModel.findById(id);
@@ -36,7 +38,7 @@ export class UsersService {
       throw new NotFoundException('Користувача не знайдено');
     }
     Object.assign(user, attrs);
-    return user.save();
+    return sanitize(await user.save());
   }
 
   async remove(id: string) {
