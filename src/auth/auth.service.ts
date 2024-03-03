@@ -74,7 +74,7 @@ export class AuthService {
     return user;
   }
 
-  async getMe(user: User) {
+  async getMe(user: User): Promise<User> {
     const currentUser = await this.userService.findById(user.id);
 
     return sanitize(await currentUser.populate('role'));
