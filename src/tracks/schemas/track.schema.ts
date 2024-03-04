@@ -6,7 +6,7 @@ export class Track extends Document {
   make: string;
 
   @Prop({ required: true })
-  brand: string;
+  carModel: string;
 
   @Prop({ required: true })
   weight: number;

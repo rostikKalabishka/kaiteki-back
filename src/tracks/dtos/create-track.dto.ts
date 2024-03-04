@@ -3,8 +3,8 @@ import { IsNumber, IsString, Max, Min } from 'class-validator';
 export class CreateTrackDto {
   @IsString({ message: 'Виробник має бути рядком' })
   make: string;
-  @IsString({ message: 'Бренд має бути рядком' })
-  brand: string;
+  @IsString({ message: 'Модель має бути рядком' })
+  carModel: string;
 
   @IsNumber({}, { message: 'Вага має бути числом' })
   @Max(1000000, { message: 'Вага має бути до 1000000' })
