@@ -39,13 +39,10 @@ export class TracksService {
       pageOptionsDto: pageOptions,
     });
     return new PageDto(tracks, pageMetaDto);
-
-    // const tracks = await this.trackModel.find();
-    return tracks;
   }
 
-  async find(brand: string) {
-    const tracks = this.trackModel.find({ brand: brand });
+  async find(carModel: string) {
+    const tracks = this.trackModel.find({ carModel: carModel });
     return tracks;
   }
 

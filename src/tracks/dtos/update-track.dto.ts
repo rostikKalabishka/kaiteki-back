@@ -5,8 +5,8 @@ export class UpdateTrackDto {
   @IsString({ message: 'Виробник має бути рядком' })
   make?: string;
   @IsOptional()
-  @IsString({ message: 'Бренд має бути рядком' })
-  brand?: string;
+  @IsString({ message: 'Модель має бути рядком' })
+  carModel?: string;
 
   @IsOptional()
   @IsNumber({}, { message: 'Вага має бути числом' })
