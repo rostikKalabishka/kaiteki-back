@@ -7,7 +7,7 @@ import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 import { PageDto } from 'src/pagination/dtos/page.dto';
 import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
 import { CarFilterDto } from './dtos/car-filter.dto';
-import { normalizeFilters } from './normalize/normalizeFilters';
+import { getSorter, normalizeFilters } from 'src/utils';
 
 @Injectable()
 export class TracksService {
@@ -29,17 +29,7 @@ export class TracksService {
   async findAll(carFilterDto: CarFilterDto, pageOptions: PageOptionsDto) {
     const skip = pageOptions.size * (pageOptions.page - 1);
 
-    let sort = { [carFilterDto?.field]: carFilterDto.order };
-
-    if (
-      carFilterDto?.field === undefined &&
-      carFilterDto?.order === undefined
-    ) {
-      sort = undefined;
-    }
-
-    delete carFilterDto.field;
-    delete carFilterDto.order;
+    const sort = getSorter(carFilterDto);
 
     const resPerPage = pageOptions.size;
 

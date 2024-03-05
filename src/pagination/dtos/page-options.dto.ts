@@ -5,7 +5,7 @@ import { SortOrder } from 'src/types';
 export class PageOptionsDto {
   // @IsEnum(Order)
   @IsOptional()
-  readonly order?: SortOrder = 'desc';
+  readonly order?: SortOrder = 'descend';
 
   @Type(() => Number)
   @IsInt()
