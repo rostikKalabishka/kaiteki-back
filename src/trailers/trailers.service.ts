@@ -7,8 +7,7 @@ import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
 import { PageDto } from 'src/pagination/dtos/page.dto';
 import { TrailerFilterDto } from './dtos/trailer-filter.dto';
-
-import { normalizeTrailerFilters } from './normalize/normalizeTrailerFilters';
+import { normalizeFilters } from 'src/utils';
 
 @Injectable()
 export class TrailersService {
@@ -36,7 +35,7 @@ export class TrailersService {
 
     const resPerPage = pageOptions.size;
     const count = (await this.trailerModel.find()).length;
-    const normalizedFilters = normalizeTrailerFilters(trailerFilterDto);
+    const normalizedFilters = normalizeFilters(trailerFilterDto);
     const users = await this.trailerModel
       .find({ ...normalizedFilters })
       .limit(resPerPage)

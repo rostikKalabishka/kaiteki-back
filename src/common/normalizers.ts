@@ -1,7 +1,7 @@
-export const SPECIAL_FIELDS = {
+export const NORMALIZERS = {
   startsWith: {
     fields: ['trackNumber', 'trailerNumber'],
-    normalizer: (value: string) => {
+    normalize: (value: string) => {
       new RegExp('^' + value);
     },
   },
