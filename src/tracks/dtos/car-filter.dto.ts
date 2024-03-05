@@ -1,5 +1,6 @@
 import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { SortOrder } from 'src/types';
 
 export class CarFilterDto {
   @IsOptional()
@@ -34,4 +35,12 @@ export class CarFilterDto {
   @Min(10, { message: 'Об`єм бензобаку має бути не менше 10' })
   @IsNumber({}, { message: 'Об`єм бензобаку має бути число' })
   gasolineTankCapacity?: number;
+
+  @IsOptional()
+  @IsString()
+  field?: string;
+
+  @IsOptional()
+  @IsString()
+  order?: SortOrder;
 }

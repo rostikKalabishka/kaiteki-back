@@ -16,6 +16,7 @@ import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 import { CarFilterDto } from './dtos/car-filter.dto';
+import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 
 @Controller('track')
 @UseGuards(JwtAuthGuard)
@@ -36,8 +37,11 @@ export class TracksController {
   }
   @UseGuards(AdminGuard)
   @Get()
-  findAllTracks(@Query() carFilterDto: CarFilterDto) {
-    return this.trackService.findAll(carFilterDto);
+  findAllTracks(
+    @Query() carFilterDto: CarFilterDto,
+    @Query() pageOptionsDto: PageOptionsDto,
+  ) {
+    return this.trackService.findAll(carFilterDto, pageOptionsDto);
   }
 
   @UseGuards(AdminGuard)
