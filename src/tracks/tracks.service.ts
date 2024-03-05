@@ -26,9 +26,20 @@ export class TracksService {
     return this.trackModel.findById(id);
   }
 
-  async findAll(carFilterDto: CarFilterDto) {
-    const pageOptions = new PageOptionsDto();
+  async findAll(carFilterDto: CarFilterDto, pageOptions: PageOptionsDto) {
     const skip = pageOptions.size * (pageOptions.page - 1);
+
+    let sort = { [carFilterDto?.field]: carFilterDto.order };
+
+    if (
+      carFilterDto?.field === undefined &&
+      carFilterDto?.order === undefined
+    ) {
+      sort = undefined;
+    }
+
+    delete carFilterDto.field;
+    delete carFilterDto.order;
 
     const resPerPage = pageOptions.size;
 
@@ -37,6 +48,7 @@ export class TracksService {
 
     const tracks = await this.trackModel
       .find({ ...normalizedFilters })
+      .sort(sort)
       .limit(resPerPage)
       .skip(skip);
 
