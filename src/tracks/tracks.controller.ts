@@ -46,8 +46,8 @@ export class TracksController {
     return this.trackService.update(id, body);
   }
   @UseGuards(AdminGuard)
-  @Delete('/:id')
-  removeTrack(@Param('id') id: string) {
-    return this.trackService.remove(id);
+  @Delete()
+  removeTrack(@Query('ids') id: string[]) {
+    return this.trackService.deleteMany(id);
   }
 }
