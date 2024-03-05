@@ -49,9 +49,17 @@ export class TracksService {
     });
     return new PageDto(tracks, pageMetaDto);
   }
+  async getAllMakeCar() {
+    const track = await this.trackModel.find();
+
+    const make = track.map((car) => car.make);
+    const setMake = new Set(make);
+
+    return Array.from(setMake);
+  }
 
   async find(carModel: string) {
-    const tracks = this.trackModel.find({ carModel: carModel });
+    const tracks = await this.trackModel.find({ carModel: carModel });
     return tracks;
   }
 

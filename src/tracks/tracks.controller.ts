@@ -25,6 +25,10 @@ export class TracksController {
   createTrack(@Body() body: CreateTrackDto) {
     return this.trackService.create(body);
   }
+  @Get('/make-all')
+  getAllMake() {
+    return this.trackService.getAllMakeCar();
+  }
   @UseGuards(AdminGuard)
   @Get('/:id')
   findTrack(@Param('id') id: string) {
@@ -35,6 +39,7 @@ export class TracksController {
   findAllTracks(@Query() carFilterDto: CarFilterDto) {
     return this.trackService.findAll(carFilterDto);
   }
+
   @UseGuards(AdminGuard)
   @Patch('/:id')
   updateTrack(@Param('id') id: string, @Body() body: UpdateTrackDto) {

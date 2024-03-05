@@ -20,16 +20,17 @@ import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 @Controller('user')
 export class UsersController {
   constructor(private userService: UsersService) {}
+
+  @UseGuards(AdminGuard)
+  @Get()
+  findAllUsers(@Query() pageOptionsDto: PageOptionsDto) {
+    return this.userService.findAll(pageOptionsDto);
+  }
   @UseGuards(AdminGuard)
   @Get('/:id')
   async findUser(@Param('id') id: string) {
     const user = await this.userService.findById(id);
     return sanitize(user);
-  }
-  @UseGuards(AdminGuard)
-  @Get('')
-  findAllUsers(@Query() pageOptionsDto: PageOptionsDto) {
-    return this.userService.findAll(pageOptionsDto);
   }
   @UseGuards(AdminGuard)
   @Patch('/:id')
