@@ -26,10 +26,7 @@ export class TracksService {
     return this.trackModel.findById(id);
   }
 
-  async findAll(
-    carFilterDto: CarFilterDto,
-    //  pageOptions: PageOptionsDto
-  ) {
+  async findAll(carFilterDto: CarFilterDto) {
     const pageOptions = new PageOptionsDto();
     const skip = pageOptions.size * (pageOptions.page - 1);
 
@@ -49,6 +46,7 @@ export class TracksService {
     });
     return new PageDto(tracks, pageMetaDto);
   }
+
   async getAllMakeCar() {
     const track = await this.trackModel.find();
 
@@ -78,5 +76,9 @@ export class TracksService {
       throw new NotFoundException('Автомобіль не знайдено');
     }
     await user.deleteOne();
+  }
+
+  async deleteMany(ids: string[]) {
+    await this.trackModel.deleteMany({ _id: { $in: ids } });
   }
 }
