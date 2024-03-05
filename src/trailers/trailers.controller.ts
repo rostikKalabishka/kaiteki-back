@@ -14,7 +14,8 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 import { TrailersService } from './trailers.service';
 import { CreateTrailerDto } from './dtos/create-trailer.dto';
 import { UpdateTrailerDto } from './dtos/update-trailer.dto';
-import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
+
+import { TrailerFilterDto } from './dtos/trailer-filter.dto';
 
 @Controller('trailer')
 @UseGuards(JwtAuthGuard)
@@ -33,8 +34,8 @@ export class TrailersController {
 
   @UseGuards(AdminGuard)
   @Get()
-  findAllTracks(@Query() pageOptionsDto: PageOptionsDto) {
-    return this.trailerService.findAll(pageOptionsDto);
+  findAllTracks(@Query() trailerFilterDto: TrailerFilterDto) {
+    return this.trailerService.findAll(trailerFilterDto);
   }
 
   @UseGuards(AdminGuard)

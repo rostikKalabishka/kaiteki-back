@@ -6,6 +6,9 @@ import { CreateTrailerDto } from './dtos/create-trailer.dto';
 import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
 import { PageDto } from 'src/pagination/dtos/page.dto';
+import { TrailerFilterDto } from './dtos/trailer-filter.dto';
+
+import { normalizeTrailerFilters } from './normalize/normalizeTrailerFilters';
 
 @Injectable()
 export class TrailersService {
@@ -27,12 +30,18 @@ export class TrailersService {
     const tracks = this.trailerModel.find({ type: type });
     return tracks;
   }
-  async findAll(pageOptions: PageOptionsDto) {
+  async findAll(trailerFilterDto: TrailerFilterDto) {
+    const pageOptions = new PageOptionsDto();
     const skip = pageOptions.size * (pageOptions.page - 1);
 
     const resPerPage = pageOptions.size;
     const count = (await this.trailerModel.find()).length;
-    const users = await this.trailerModel.find().limit(resPerPage).skip(skip);
+    const normalizedFilters = normalizeTrailerFilters(trailerFilterDto);
+    const users = await this.trailerModel
+      .find({ ...normalizedFilters })
+      .limit(resPerPage)
+      .skip(skip);
+
     const pageMetaDto = new PageMetaDto({
       itemCount: count,
       pageOptionsDto: pageOptions,

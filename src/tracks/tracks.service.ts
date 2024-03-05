@@ -6,6 +6,8 @@ import { CreateTrackDto } from './dtos/create-track.dto';
 import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 import { PageDto } from 'src/pagination/dtos/page.dto';
 import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
+import { CarFilterDto } from './dtos/car-filter.dto';
+import { normalizeFilters } from './normalize/normalizeFilters';
 
 @Injectable()
 export class TracksService {
@@ -24,25 +26,40 @@ export class TracksService {
     return this.trackModel.findById(id);
   }
 
-  async findAll(pageOptions: PageOptionsDto) {
+  async findAll(
+    carFilterDto: CarFilterDto,
+    //  pageOptions: PageOptionsDto
+  ) {
+    const pageOptions = new PageOptionsDto();
     const skip = pageOptions.size * (pageOptions.page - 1);
 
     const resPerPage = pageOptions.size;
 
     const count = (await this.trackModel.find()).length;
-    console.log(count);
+    const normalizedFilters = normalizeFilters(carFilterDto);
 
-    const tracks = await this.trackModel.find().limit(resPerPage).skip(skip);
-    console.log(tracks);
+    const tracks = await this.trackModel
+      .find({ ...normalizedFilters })
+      .limit(resPerPage)
+      .skip(skip);
+
     const pageMetaDto = new PageMetaDto({
       itemCount: count,
       pageOptionsDto: pageOptions,
     });
     return new PageDto(tracks, pageMetaDto);
   }
+  async getAllMakeCar() {
+    const track = await this.trackModel.find();
+
+    const make = track.map((car) => car.make);
+    const setMake = new Set(make);
+
+    return Array.from(setMake);
+  }
 
   async find(carModel: string) {
-    const tracks = this.trackModel.find({ carModel: carModel });
+    const tracks = await this.trackModel.find({ carModel: carModel });
     return tracks;
   }
 

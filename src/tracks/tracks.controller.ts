@@ -14,7 +14,8 @@ import { UpdateTrackDto } from './dtos/update-track.dto';
 import { CreateTrackDto } from './dtos/create-track.dto';
 import { AdminGuard } from 'src/auth/guards/admin.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
+
+import { CarFilterDto } from './dtos/car-filter.dto';
 
 @Controller('track')
 @UseGuards(JwtAuthGuard)
@@ -24,6 +25,10 @@ export class TracksController {
   createTrack(@Body() body: CreateTrackDto) {
     return this.trackService.create(body);
   }
+  @Get('/make-all')
+  getAllMake() {
+    return this.trackService.getAllMakeCar();
+  }
   @UseGuards(AdminGuard)
   @Get('/:id')
   findTrack(@Param('id') id: string) {
@@ -31,9 +36,10 @@ export class TracksController {
   }
   @UseGuards(AdminGuard)
   @Get()
-  findAllTracks(@Query() pageOptionsDto: PageOptionsDto) {
-    return this.trackService.findAll(pageOptionsDto);
+  findAllTracks(@Query() carFilterDto: CarFilterDto) {
+    return this.trackService.findAll(carFilterDto);
   }
+
   @UseGuards(AdminGuard)
   @Patch('/:id')
   updateTrack(@Param('id') id: string, @Body() body: UpdateTrackDto) {
