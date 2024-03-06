@@ -1,4 +1,5 @@
 import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
+import { SortOrder } from 'mongoose';
 
 export class TrailerFilterDto {
   @IsOptional()
@@ -14,4 +15,12 @@ export class TrailerFilterDto {
   @IsOptional()
   @IsString({ message: 'Номера автомобіля мають бути рядком' })
   trailerNumber?: string;
+
+  @IsOptional()
+  @IsString()
+  field?: string;
+
+  @IsOptional()
+  @IsString()
+  order?: SortOrder;
 }

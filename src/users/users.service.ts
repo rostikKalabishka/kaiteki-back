@@ -8,6 +8,8 @@ import { sanitize } from 'src/utils/sanitize';
 import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
 import { PageDto } from 'src/pagination/dtos/page.dto';
+import { getSorter } from 'src/utils';
+import { UserFilterDto } from './dtos/user-filter.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -28,20 +30,32 @@ export class UsersService {
     return await this.userModel.findOne({ email: email });
   }
 
-  async findAll(pageOptions: PageOptionsDto) {
+  async findAllDrivers() {
+    const users = await this.userModel
+      .find({ role: '65dcbcfe52b7e537befdca30' })
+      .populate('role');
+
+    return users;
+  }
+
+  async findAll(pageOptions: PageOptionsDto, userFilterDto: UserFilterDto) {
     const skip = pageOptions.size * (pageOptions.page - 1);
+
+    const sort = getSorter(userFilterDto);
 
     const resPerPage = pageOptions.size;
     const count = (await this.userModel.find()).length;
     const users = (
-      await this.userModel.find().limit(resPerPage).skip(skip)
+      await this.userModel.find().sort(sort).limit(resPerPage).skip(skip)
     ).map((user) => sanitize(user));
+
     const pageMetaDto = new PageMetaDto({
       itemCount: count,
       pageOptionsDto: pageOptions,
     });
     return new PageDto(users, pageMetaDto);
   }
+
   async update(id: string, attrs: Partial<User>) {
     const user = await this.userModel.findById(id);
     if (!user) {
@@ -57,5 +71,9 @@ export class UsersService {
       throw new NotFoundException('Користувача не знайдено');
     }
     await user.deleteOne();
+  }
+
+  async deleteMany(ids: string[]) {
+    await this.userModel.deleteMany({ _id: { $in: ids } });
   }
 }

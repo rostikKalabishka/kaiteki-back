@@ -16,6 +16,7 @@ import { CreateTrailerDto } from './dtos/create-trailer.dto';
 import { UpdateTrailerDto } from './dtos/update-trailer.dto';
 
 import { TrailerFilterDto } from './dtos/trailer-filter.dto';
+import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 
 @Controller('trailer')
 @UseGuards(JwtAuthGuard)
@@ -34,8 +35,11 @@ export class TrailersController {
 
   @UseGuards(AdminGuard)
   @Get()
-  findAllTracks(@Query() trailerFilterDto: TrailerFilterDto) {
-    return this.trailerService.findAll(trailerFilterDto);
+  findAllTracks(
+    @Query() trailerFilterDto: TrailerFilterDto,
+    @Query() pageOptionsDto: PageOptionsDto,
+  ) {
+    return this.trailerService.findAll(trailerFilterDto, pageOptionsDto);
   }
 
   @UseGuards(AdminGuard)
