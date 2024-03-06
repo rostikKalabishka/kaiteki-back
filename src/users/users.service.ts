@@ -24,18 +24,37 @@ export class UsersService {
   }
 
   async findById(id: string) {
-    return this.userModel.findById(id);
+    return (await this.userModel.findById(id)).populate('role');
   }
   async find(email: string) {
-    return await this.userModel.findOne({ email: email });
+    return (await this.userModel.findOne({ email: email })).populate('role');
   }
 
-  async findAllDrivers() {
-    const users = await this.userModel
-      .find({ role: '65dcbcfe52b7e537befdca30' })
-      .populate('role');
+  async findAllDrivers(
+    pageOptions: PageOptionsDto,
+    userFilterDto: UserFilterDto,
+  ) {
+    const skip = pageOptions.size * (pageOptions.page - 1);
 
-    return users;
+    const sort = getSorter(userFilterDto);
+
+    const resPerPage = pageOptions.size;
+    const count = (await this.userModel.find()).length;
+    console.log(sort);
+    const users = (
+      await this.userModel
+        .find({ role: '65dcbcfe52b7e537befdca30' })
+        .populate('role')
+        .sort(sort)
+        .limit(resPerPage)
+        .skip(skip)
+    ).map((user) => sanitize(user));
+
+    const pageMetaDto = new PageMetaDto({
+      itemCount: count,
+      pageOptionsDto: pageOptions,
+    });
+    return new PageDto(users, pageMetaDto);
   }
 
   async findAll(pageOptions: PageOptionsDto, userFilterDto: UserFilterDto) {
@@ -45,6 +64,7 @@ export class UsersService {
 
     const resPerPage = pageOptions.size;
     const count = (await this.userModel.find()).length;
+    console.log(sort);
     const users = (
       await this.userModel.find().sort(sort).limit(resPerPage).skip(skip)
     ).map((user) => sanitize(user));

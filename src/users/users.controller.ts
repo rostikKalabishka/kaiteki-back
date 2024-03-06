@@ -33,8 +33,11 @@ export class UsersController {
 
   @UseGuards(AdminGuard)
   @Get('/drivers')
-  findAllDrivers() {
-    return this.userService.findAllDrivers();
+  findAllDrivers(
+    @Query() pageOptionsDto: PageOptionsDto,
+    @Query() userFilterDto: UserFilterDto,
+  ) {
+    return this.userService.findAllDrivers(pageOptionsDto, userFilterDto);
   }
 
   @UseGuards(AdminGuard)
