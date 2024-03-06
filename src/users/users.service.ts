@@ -40,7 +40,7 @@ export class UsersService {
 
     const resPerPage = pageOptions.size;
     const count = (await this.userModel.find()).length;
-    console.log(sort);
+
     const users = (
       await this.userModel
         .find({ role: '65dcbcfe52b7e537befdca30' })
@@ -64,7 +64,7 @@ export class UsersService {
 
     const resPerPage = pageOptions.size;
     const count = (await this.userModel.find()).length;
-    console.log(sort);
+
     const users = (
       await this.userModel.find().sort(sort).limit(resPerPage).skip(skip)
     ).map((user) => sanitize(user));
