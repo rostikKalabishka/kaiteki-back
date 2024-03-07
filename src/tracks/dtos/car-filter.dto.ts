@@ -19,7 +19,7 @@ export class CarFilterDto {
   @IsOptional()
   @IsNumber({}, { message: 'Вага має бути числом' })
   @Max(1000000, { message: 'Вага має бути до 1000000' })
-  @Min(1, { message: 'Вага мабути бути не менше 1' })
+  @Min(1, { message: 'Вага має бути бути не менше 1' })
   weight?: number;
 
   @Transform(({ value }) => parseInt(value))

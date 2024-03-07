@@ -10,6 +10,9 @@ export class CreateFlightDto {
   @IsString()
   to: string;
 
+  @IsNumber()
+  distance: number;
+
   @IsString()
   companyName: string;
   @IsNotEmpty()

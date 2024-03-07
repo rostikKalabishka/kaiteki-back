@@ -6,6 +6,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { getJWTConfig } from 'src/config/jwt.config';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   providers: [FlightService],
@@ -18,6 +19,7 @@ import { getJWTConfig } from 'src/config/jwt.config';
       useFactory: getJWTConfig,
     }),
     ConfigModule,
+    HttpModule,
   ],
 })
 export class FlightModule {}
