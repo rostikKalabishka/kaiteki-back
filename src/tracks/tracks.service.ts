@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Track } from './schemas/track.schema';
+import { Track, TrackDocument } from './schemas/track.schema';
 import { Model } from 'mongoose';
 import { CreateTrackDto } from './dtos/create-track.dto';
 import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
@@ -13,7 +13,7 @@ import { getSorter, normalizeFilters } from 'src/utils';
 export class TracksService {
   constructor(
     @InjectModel(Track.name)
-    private readonly trackModel: Model<Track>,
+    private readonly trackModel: Model<TrackDocument>,
   ) {}
 
   async create(dto: CreateTrackDto) {

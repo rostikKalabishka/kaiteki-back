@@ -13,6 +13,7 @@ import { RolesModule } from './roles/roles.module';
 
 import { TracksModule } from './tracks/tracks.module';
 import { TrailersModule } from './trailers/trailers.module';
+import { FlightModule } from './flight/flight.module';
 
 @Module({
   imports: [
@@ -31,6 +32,8 @@ import { TrailersModule } from './trailers/trailers.module';
     TracksModule,
 
     TrailersModule,
+
+    FlightModule,
   ],
   controllers: [AppController],
   providers: [AppService],

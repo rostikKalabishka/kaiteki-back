@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+export type TrackDocument = Track & Document;
 @Schema()
-export class Track extends Document {
+export class Track {
   @Prop({ required: true })
   make: string;
 
