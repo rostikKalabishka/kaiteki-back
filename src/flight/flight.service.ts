@@ -9,11 +9,14 @@ import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
 import { PageDto } from 'src/pagination/dtos/page.dto';
 import { FlightFilterDto } from './dtos/flight-filter.dto';
 
+import { HttpService } from '@nestjs/axios';
+
 @Injectable()
 export class FlightService {
   constructor(
     @InjectModel(Flight.name)
     private readonly flightModel: Model<FlightDocument>,
+    private readonly httpService: HttpService,
   ) {}
 
   async create(dto: CreateFlightDto) {
@@ -25,6 +28,7 @@ export class FlightService {
 
     return flight;
   }
+
   async findById(id: string) {
     return this.flightModel
       .findById(id)

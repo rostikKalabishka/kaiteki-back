@@ -15,6 +15,9 @@ export class Flight {
   @Prop({ required: true })
   companyName: string;
 
+  @Prop()
+  distance: number;
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: User.name,

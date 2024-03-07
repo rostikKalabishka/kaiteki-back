@@ -23,6 +23,9 @@ export class UpdateFlightDto {
   @IsNumber()
   price?: number;
 
+  @IsNumber()
+  distance?: number;
+
   @IsOptional()
   track?: Track;
 

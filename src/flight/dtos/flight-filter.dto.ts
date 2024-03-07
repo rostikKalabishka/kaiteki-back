@@ -28,6 +28,9 @@ export class FlightFilterDto {
 
   @IsOptional()
   trailer?: Trailer;
+  @IsOptional()
+  @IsNumber()
+  distance?: number;
 
   @IsOptional()
   @IsString()
