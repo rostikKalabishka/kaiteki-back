@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Trailer } from './schemas/trailer.schemas';
+import { Trailer, TrailerDocument } from './schemas/trailer.schemas';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { CreateTrailerDto } from './dtos/create-trailer.dto';
@@ -13,7 +13,7 @@ import { getSorter, normalizeFilters } from 'src/utils';
 export class TrailersService {
   constructor(
     @InjectModel(Trailer.name)
-    private readonly trailerModel: Model<Trailer>,
+    private readonly trailerModel: Model<TrailerDocument>,
   ) {}
 
   async create(dto: CreateTrailerDto) {
@@ -68,5 +68,9 @@ export class TrailersService {
       throw new NotFoundException('Прицеп не знайдено');
     }
     await user.deleteOne();
+  }
+
+  async deleteMany(ids: string[]) {
+    await this.trailerModel.deleteMany({ _id: { $in: ids } });
   }
 }

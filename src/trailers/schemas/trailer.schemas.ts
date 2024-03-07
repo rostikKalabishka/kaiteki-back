@@ -1,8 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
+export type TrailerDocument = Trailer & Document;
 @Schema()
-export class Trailer extends Document {
+export class Trailer {
   @Prop({ required: true })
   weight: number;
 

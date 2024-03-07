@@ -47,9 +47,10 @@ export class TrailersController {
   updateTrack(@Param('id') id: string, @Body() body: UpdateTrailerDto) {
     return this.trailerService.update(id, body);
   }
+
   @UseGuards(AdminGuard)
   @Delete('/:id')
-  removeTrack(@Param('id') id: string) {
-    return this.trailerService.remove(id);
+  removeTrack(@Query('ids') id: string[]) {
+    return this.trailerService.deleteMany(id);
   }
 }
