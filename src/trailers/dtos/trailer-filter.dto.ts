@@ -1,9 +1,11 @@
+import { Type } from 'class-transformer';
 import { IsNumber, IsOptional, IsString, Max, Min } from 'class-validator';
 import { SortOrder } from 'mongoose';
 
 export class TrailerFilterDto {
   @IsOptional()
   @IsNumber({}, { message: 'Вага має бути числом' })
+  @Type(() => Number)
   @Max(1000000, { message: 'Вага має бути до 1000000' })
   @Min(1, { message: 'Вага має бути бути не менше 1' })
   weight?: number;

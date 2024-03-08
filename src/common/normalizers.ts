@@ -1,8 +1,6 @@
 export const NORMALIZERS = {
   startsWith: {
     fields: ['trackNumber', 'trailerNumber'],
-    normalize: (value: string) => {
-      new RegExp('^' + value);
-    },
+    normalize: (value: string) => new RegExp('^' + value),
   },
 };

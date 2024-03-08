@@ -29,6 +29,16 @@ export class TrailersService {
     const tracks = this.trailerModel.find({ type: type });
     return tracks;
   }
+
+  async getAllTypes() {
+    const trailers = await this.trailerModel.find();
+
+    const types = trailers.map((trailer) => trailer.type);
+    const setTypes = new Set(types);
+
+    return Array.from(setTypes);
+  }
+
   async findAll(
     trailerFilterDto: TrailerFilterDto,
     pageOptions: PageOptionsDto,

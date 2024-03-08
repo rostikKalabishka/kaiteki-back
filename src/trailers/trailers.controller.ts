@@ -27,6 +27,11 @@ export class TrailersController {
     return this.trailerService.create(body);
   }
 
+  @Get('/types-all')
+  getAllMake() {
+    return this.trailerService.getAllTypes();
+  }
+
   @UseGuards(AdminGuard)
   @Get('/:id')
   findTrack(@Param('id') id: string) {
