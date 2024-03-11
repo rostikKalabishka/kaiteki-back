@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsEmail,
   IsNumber,
@@ -21,6 +22,7 @@ export class RegistrationUserDto {
   password: string;
   @IsOptional()
   @IsNumber({}, { message: 'Заробітна палта за кілометр має бути числом' })
+  @Type(() => Number)
   salaryPerOneKm: number;
   @IsOptional()
   @IsString({ message: 'Роль має бути рядком' })

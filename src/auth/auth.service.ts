@@ -30,6 +30,7 @@ export class AuthService {
       role: dto.role,
       fullName: dto.fullName,
       password: await hash(dto.password, salt),
+      salaryPerOneKm: dto.salaryPerOneKm,
     });
 
     const token = await this.jwtService.signAsync(

@@ -20,7 +20,7 @@ export class User extends Document {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Roles',
-    default: '65dcbdb352b7e537befdca31',
+    default: '65dcbcfe52b7e537befdca30',
   })
   role: Role;
 }

@@ -1,4 +1,11 @@
-import { IsEmail, IsOptional, IsString, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsEmail,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MinLength,
+} from 'class-validator';
 import { Role } from 'src/types';
 
 export class UpdateUserDto {
@@ -9,6 +16,11 @@ export class UpdateUserDto {
   @IsOptional()
   @IsEmail({}, { message: 'Невірна адреса електронної пошти' })
   email?: string;
+
+  @IsOptional()
+  @IsNumber({}, { message: 'Заробітна палта за кілометр має бути числом' })
+  @Type(() => Number)
+  salaryPerOneKm: number;
 
   @IsOptional()
   @IsString({ message: 'Роль має бути рядком' })

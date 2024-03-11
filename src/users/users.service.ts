@@ -8,7 +8,7 @@ import { sanitize } from 'src/utils/sanitize';
 import { PageOptionsDto } from 'src/pagination/dtos/page-options.dto';
 import { PageMetaDto } from 'src/pagination/dtos/page-meta.dto';
 import { PageDto } from 'src/pagination/dtos/page.dto';
-import { getSorter } from 'src/utils';
+import { getSorter, normalizeFilters } from 'src/utils';
 import { UserFilterDto } from './dtos/user-filter.dto';
 @Injectable()
 export class UsersService {
@@ -27,7 +27,7 @@ export class UsersService {
     return (await this.userModel.findById(id)).populate('role');
   }
   async find(email: string) {
-    return (await this.userModel.findOne({ email: email })).populate('role');
+    return (await this.userModel.findOne({ email: email }))?.populate('role');
   }
 
   async findAllDrivers(
@@ -39,11 +39,15 @@ export class UsersService {
     const sort = getSorter(userFilterDto);
 
     const resPerPage = pageOptions.size;
-    const count = (await this.userModel.find()).length;
+    const count = (
+      await this.userModel.find({ role: '65dcbcfe52b7e537befdca30' })
+    ).length;
+
+    const normalizedFilters = normalizeFilters(userFilterDto);
 
     const users = (
       await this.userModel
-        .find({ role: '65dcbcfe52b7e537befdca30' })
+        .find({ role: '65dcbcfe52b7e537befdca30', ...normalizedFilters })
         .populate('role')
         .sort(sort)
         .limit(resPerPage)

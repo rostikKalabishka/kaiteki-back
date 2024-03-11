@@ -1,9 +1,10 @@
 import { CarFilterDto } from '../tracks/dtos/car-filter.dto';
 import { TrailerFilterDto } from 'src/trailers/dtos/trailer-filter.dto';
 import { SYSTEM_FIELDS, NORMALIZERS } from 'src/common';
+import { UserFilterDto } from 'src/users/dtos/user-filter.dto';
 
 export const normalizeFilters = (
-  rawFilters: CarFilterDto | TrailerFilterDto,
+  rawFilters: CarFilterDto | TrailerFilterDto | UserFilterDto,
 ) => {
   return Object.fromEntries(
     Object.entries(rawFilters)
