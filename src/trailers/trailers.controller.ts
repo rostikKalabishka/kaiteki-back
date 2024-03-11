@@ -54,7 +54,7 @@ export class TrailersController {
   }
 
   @UseGuards(AdminGuard)
-  @Delete('/:id')
+  @Delete()
   removeTrack(@Query('ids') id: string[]) {
     return this.trailerService.deleteMany(id);
   }
