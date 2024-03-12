@@ -11,6 +11,7 @@ import { HttpModule } from '@nestjs/axios';
 @Module({
   providers: [FlightService],
   controllers: [FlightController],
+  exports: [FlightService],
   imports: [
     MongooseModule.forFeature([{ name: Flight.name, schema: FlightSchema }]),
     JwtModule.registerAsync({

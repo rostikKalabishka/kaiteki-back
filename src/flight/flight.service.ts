@@ -80,6 +80,27 @@ export class FlightService {
     return new PageDto(trailers, pageMetaDto);
   }
 
+  async findByMonth(date: string) {
+    const month = new Date(date).getMonth() + 1;
+    const year = new Date(date).getFullYear();
+
+    const flights = await this.flightModel
+      .find({
+        createdAt: {
+          $gte: new Date(year, month - 1, 1),
+          $lt: new Date(year, month, 1),
+        },
+      })
+      .populate([
+        { path: 'driver', populate: { path: 'role' } },
+        'track',
+        'trailer',
+        'driver',
+      ]);
+
+    return flights;
+  }
+
   async update(id: string, attrs: Partial<Flight>) {
     const user = await this.flightModel.findById(id);
     if (!user) {
