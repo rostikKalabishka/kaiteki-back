@@ -9,6 +9,10 @@ export class StatsService {
   async getStats(dto: StatsFilterDto) {
     const flights = await this.flightService.findByMonth(dto.month);
 
+    if (!flights.length) {
+      return null;
+    }
+
     const prices = flights.map(getRideStats);
 
     const totalSpend = prices.reduce((acc, { total }) => acc + total, 0);
