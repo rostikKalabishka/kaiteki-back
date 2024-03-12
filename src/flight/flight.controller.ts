@@ -27,6 +27,11 @@ export class FlightController {
     return this.flightService.create(dto);
   }
 
+  @Get('/companies-all')
+  getAllMake() {
+    return this.flightService.getAllCompanies();
+  }
+
   @UseGuards(AdminGuard)
   @Get()
   findAllFlight(
@@ -46,7 +51,7 @@ export class FlightController {
     return this.flightService.findById(id);
   }
   @UseGuards(AdminGuard)
-  @Delete('/:id')
+  @Delete()
   removeFlight(@Query('ids') id: string[]) {
     return this.flightService.deleteMany(id);
   }

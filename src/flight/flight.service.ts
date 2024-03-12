@@ -29,6 +29,15 @@ export class FlightService {
     return flight;
   }
 
+  async getAllCompanies() {
+    const flights = await this.flightModel.find();
+
+    const companies = flights.map((flight) => flight.companyName);
+    const setCompanies = new Set(companies);
+
+    return Array.from(setCompanies);
+  }
+
   async findById(id: string) {
     return this.flightModel
       .findById(id)
@@ -38,10 +47,12 @@ export class FlightService {
         'trailer',
       ]);
   }
+
   async find(type: string) {
     const tracks = this.flightModel.find({ type: type });
     return tracks;
   }
+
   async findAll(flightFilterDto: FlightFilterDto, pageOptions: PageOptionsDto) {
     const skip = pageOptions.size * (pageOptions.page - 1);
     const sort = getSorter(flightFilterDto);
@@ -56,6 +67,7 @@ export class FlightService {
         { path: 'driver', populate: { path: 'role' } },
         'track',
         'trailer',
+        'driver',
       ])
       .sort(sort)
       .limit(resPerPage)

@@ -1,6 +1,7 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Track } from 'src/tracks/schemas/track.schema';
 import { Trailer } from 'src/trailers/schemas/trailer.schemas';
+import { Status } from 'src/types';
 import { User } from 'src/users/schemas/user.schemas';
 
 export class UpdateFlightDto {
@@ -11,6 +12,10 @@ export class UpdateFlightDto {
   @IsOptional()
   @IsString()
   to?: string;
+
+  @IsOptional()
+  @IsString()
+  status?: Status;
 
   @IsOptional()
   @IsString()
